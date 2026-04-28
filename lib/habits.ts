@@ -103,3 +103,54 @@ export function toggleHabitCompletion(habit: Habit, date: string): Habit {
     completions
   };
 }
+
+/**
+ * Retrieves all habits from localStorage, optionally filtered by userId
+ * Requirements: 6.3, 7.4, 13.3, 13.4
+ */
+export function getHabits(userId?: string): Habit[] {
+  if (typeof window === 'undefined') return [];
+  
+  const stored = localStorage.getItem('habit-tracker-habits');
+  const habits: Habit[] = stored ? JSON.parse(stored) : [];
+  
+  if (userId) {
+    return habits.filter(habit => habit.userId === userId);
+  }
+  
+  return habits;
+}
+
+/**
+ * Saves a habit to localStorage (creates new or updates existing)
+ * Requirements: 6.3, 8.4, 10.4, 13.4, 13.7
+ */
+export function saveHabit(habit: Habit): void {
+  if (typeof window === 'undefined') return;
+  
+  const habits = getHabits();
+  const existingIndex = habits.findIndex(h => h.id === habit.id);
+  
+  if (existingIndex !== -1) {
+    // Update existing habit
+    habits[existingIndex] = habit;
+  } else {
+    // Add new habit
+    habits.push(habit);
+  }
+  
+  localStorage.setItem('habit-tracker-habits', JSON.stringify(habits));
+}
+
+/**
+ * Deletes a habit from localStorage
+ * Requirements: 9.2, 13.4, 13.7
+ */
+export function deleteHabit(habitId: string): void {
+  if (typeof window === 'undefined') return;
+  
+  const habits = getHabits();
+  const filtered = habits.filter(h => h.id !== habitId);
+  
+  localStorage.setItem('habit-tracker-habits', JSON.stringify(filtered));
+}
