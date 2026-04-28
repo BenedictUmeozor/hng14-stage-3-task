@@ -10,8 +10,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['src/lib/**/*.{ts,tsx}'],
-      exclude: ['src/lib/**/*.test.{ts,tsx}', 'src/lib/**/*.spec.{ts,tsx}'],
+      include: ['lib/**/*.{ts,tsx}'],
+      exclude: ['lib/**/*.test.{ts,tsx}', 'lib/**/*.spec.{ts,tsx}'],
       thresholds: {
         lines: 80,
         functions: 80,

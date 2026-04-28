@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import SplashScreen from '@/components/SplashScreen';
+import SplashScreen from '../components/SplashScreen';
 import { getSession } from '@/lib/auth';
 
 export default function Home() {
