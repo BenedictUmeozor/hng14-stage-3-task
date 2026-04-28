@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import SignupForm from './SignupForm';
+import SignupForm from '@/components/auth/SignupForm';
 import { User } from '@/types/auth';
 
 describe('SignupForm', () => {

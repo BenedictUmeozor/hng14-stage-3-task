@@ -1,4 +1,4 @@
-import { Habit } from '../types/habit';
+import { Habit } from '@/types/habit';
 
 /**
  * Converts a habit name to a URL-safe slug

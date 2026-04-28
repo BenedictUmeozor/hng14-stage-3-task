@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { getHabitSlug, validateHabitName, calculateCurrentStreak, toggleHabitCompletion } from './habits';
-import { Habit } from '../types/habit';
+import { getHabitSlug, validateHabitName, calculateCurrentStreak, toggleHabitCompletion } from '@/lib/habits';
+import { Habit } from '@/types/habit';
 
 describe('getHabitSlug', () => {
   it('converts to lowercase', () => {
