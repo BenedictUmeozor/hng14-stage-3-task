@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { User, Session } from '@/types/auth';
+import { getUsers, createSession } from '@/lib/auth';
 
 interface LoginFormProps {
   onSuccess: () => void;
@@ -27,8 +27,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
       }
 
       // Get users from localStorage
-      const usersJson = localStorage.getItem('habit-tracker-users');
-      const users: User[] = usersJson ? JSON.parse(usersJson) : [];
+      const users = getUsers();
 
       // Find user with matching credentials
       const user = users.find(
@@ -42,11 +41,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
       }
 
       // Create session in localStorage
-      const session: Session = {
-        userId: user.id,
-        email: user.email,
-      };
-      localStorage.setItem('habit-tracker-session', JSON.stringify(session));
+      createSession(user.id, user.email);
 
       // Call onSuccess callback
       onSuccess();

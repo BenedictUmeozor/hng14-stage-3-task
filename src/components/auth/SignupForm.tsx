@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { User, Session } from '@/types/auth';
+import { findUserByEmail, createUser, createSession } from '@/lib/auth';
 
 interface SignupFormProps {
   onSuccess: () => void;
@@ -25,12 +25,8 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
         return;
       }
 
-      // Get users from localStorage
-      const usersJson = localStorage.getItem('habit-tracker-users');
-      const users: User[] = usersJson ? JSON.parse(usersJson) : [];
-
       // Check for existing user
-      const existingUser = users.find((u) => u.email === email);
+      const existingUser = findUserByEmail(email);
       if (existingUser) {
         setError('User already exists');
         setLoading(false);
@@ -38,23 +34,10 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
       }
 
       // Create new user
-      const newUser: User = {
-        id: crypto.randomUUID(),
-        email,
-        password,
-        createdAt: new Date().toISOString(),
-      };
-
-      // Add user to localStorage
-      users.push(newUser);
-      localStorage.setItem('habit-tracker-users', JSON.stringify(users));
+      const newUser = createUser(email, password);
 
       // Create session in localStorage
-      const session: Session = {
-        userId: newUser.id,
-        email: newUser.email,
-      };
-      localStorage.setItem('habit-tracker-session', JSON.stringify(session));
+      createSession(newUser.id, newUser.email);
 
       // Call onSuccess callback
       onSuccess();
