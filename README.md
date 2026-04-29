@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Habit Tracker PWA
+
+A mobile-first Progressive Web App for tracking daily habits, built with Next.js and React. Create, edit, and manage habits while tracking completion streaks — all with offline support and local persistence.
+
+## Features
+
+- **Authentication** — Sign up and log in with email/password (stored locally)
+- **Habit Management** — Create, edit, and delete daily habits
+- **Completion Tracking** — Mark habits complete/incomplete for today
+- **Streak Counter** — Visible current streak calculated from consecutive completions
+- **Offline Support** — Service worker caches the app shell; no crash without network
+- **Installable** — Meets PWA criteria for Add to Home Screen
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router) with React and TypeScript
+- **Styling:** Tailwind CSS
+- **Persistence:** localStorage (no remote database)
+- **Testing:** Vitest + React Testing Library (unit/integration), Playwright (E2E)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Setup
 
 ```bash
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Running Tests
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Unit tests with coverage
+npm run test:unit
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Integration tests
+npm run test:integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# E2E tests (requires a running build)
+npm run build && npx playwright install && npm run test:e2e
 
-## Deploy on Vercel
+# Run all tests
+npm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Persistence
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All data is stored in `localStorage` using three keys:
+
+| Key | Contents |
+|---|---|
+| `habit-tracker-users` | Array of user objects (id, email, password, createdAt) |
+| `habit-tracker-session` | Current session (userId, email) or absent if logged out |
+| `habit-tracker-habits` | Array of habit objects scoped to users via `userId` |
+
+- Each user's habits are isolated by `userId`.
+- Completions are stored as an array of `YYYY-MM-DD` date strings.
+- Data survives page reloads but is cleared if the user clears browser storage.
+
+## PWA
+
+The app is installable and works offline:
+
+- **`public/manifest.json`** — App metadata, icons, and display mode (`standalone`)
+- **`public/sw.js`** — Service worker that caches the app shell on install and serves cached assets when offline (network fallback strategy)
+- **`public/icons/`** — 192×192 and 512×512 PNG icons for home screen and splash
+
+The service worker is registered on app load via a client component (`ServiceWorkerRegistrar`).
+
+## Architecture & Trade-offs
+
+| Decision | Rationale |
+|---|---|
+| **localStorage over a database** | PRD requires front-end-only, deterministic persistence. localStorage is synchronous and needs no setup, making tests fully reproducible. |
+| **Password stored in plain text** | Required by PRD (no external auth service). In a real product this would use hashing + a server. |
+| **Single `'daily'` frequency** | PRD scopes frequency to daily only; the select element is present but disabled for future extensibility. |
+| **Client-side routing guards** | Dashboard checks session on mount and redirects. No middleware — keeps the app fully static/client-rendered. |
+| **Immutable habit updates** | `toggleHabitCompletion` returns a new object rather than mutating, preventing stale-state bugs in React. |
+
+## Test Mapping
+
+| Test Layer | Scope | Location |
+|---|---|---|
+| **Unit** | `getHabitSlug`, `validateHabitName`, `calculateCurrentStreak`, `toggleHabitCompletion`, auth utilities | `lib/*.test.ts` |
+| **Integration** | LoginForm, SignupForm, HabitForm, HabitCard, SplashScreen rendering | `components/**/*.test.tsx` |
+| **E2E** | Full auth flow, habit CRUD, persistence across reload, routing guards, PWA/offline | `e2e/*.spec.ts` |
+
+Coverage target: **≥ 80%** for `lib/` (enforced via `vitest run --coverage`).
