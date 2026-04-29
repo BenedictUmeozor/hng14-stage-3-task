@@ -1,33 +1,46 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import SplashScreen from '../components/SplashScreen';
 import { getSession } from '@/lib/auth';
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
 
-  const handleSplashComplete = () => {
+  const handleSplashComplete = useCallback(() => {
+    if (isRedirecting) return; // Prevent multiple redirects
+    
     setShowSplash(false);
+    setIsRedirecting(true);
     
     // Check for session after splash completes
     const session = getSession();
     
     if (session) {
-      // Redirect to dashboard if session exists
-      router.push('/dashboard');
+      router.replace('/dashboard');
     } else {
-      // Redirect to login if no session
-      router.push('/login');
+      router.replace('/login');
     }
-  };
+  }, [router, isRedirecting]);
+
+  // Prevent showing splash on back navigation
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash');
+    if (hasSeenSplash === 'true') {
+      setShowSplash(false);
+      const session = getSession();
+      router.replace(session ? '/dashboard' : '/login');
+    } else {
+      sessionStorage.setItem('hasSeenSplash', 'true');
+    }
+  }, [router]);
 
   if (showSplash) {
     return <SplashScreen onComplete={handleSplashComplete} />;
   }
 
-  // This will briefly show while redirecting
   return null;
 }

@@ -32,8 +32,8 @@ describe('SplashScreen', () => {
     
     expect(onComplete).not.toHaveBeenCalled();
     
-    // Fast-forward time by 1200ms (the duration set in the component)
-    vi.advanceTimersByTime(1200);
+    // Fast-forward time by 1200ms (the duration) + 300ms (fade-out animation)
+    vi.advanceTimersByTime(1500);
     
     expect(onComplete).toHaveBeenCalledTimes(1);
   });
@@ -45,7 +45,7 @@ describe('SplashScreen', () => {
     unmount();
     
     // Fast-forward time after unmount
-    vi.advanceTimersByTime(1200);
+    vi.advanceTimersByTime(1500);
     
     // onComplete should not be called after unmount
     expect(onComplete).not.toHaveBeenCalled();
