@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import Link from 'next/link';
 import { getUsers, createSession } from '@/lib/auth';
 
 interface LoginFormProps {
@@ -130,6 +131,18 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-slate-600" style={{ fontFamily: 'system-ui, sans-serif' }}>
+              Don't have an account?{' '}
+              <Link
+                href="/signup"
+                className="font-semibold text-amber-600 hover:text-rose-600 transition-colors focus:outline-none focus:underline"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
