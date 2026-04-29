@@ -52,11 +52,11 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-amber-50 via-rose-50 to-violet-100">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-amber-50 via-rose-50 to-violet-100">
       <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-amber-200/50">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent" style={{ fontFamily: 'Georgia, serif' }}>
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 border border-amber-200/50">
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold mb-2 bg-gradient-to-r from-amber-600 to-rose-600 bg-clip-text text-transparent" style={{ fontFamily: 'Georgia, serif' }}>
               Welcome Back
             </h1>
             <p className="text-slate-600 text-sm" style={{ fontFamily: 'system-ui, sans-serif' }}>
@@ -64,7 +64,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
             <div>
               <label
                 htmlFor="email"
@@ -82,9 +82,10 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
                   setEmail(e.target.value);
                   setError(null);
                 }}
-                className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/50 outline-none transition-all bg-white/50"
+                className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/50 focus:ring-offset-2 outline-none transition-all bg-white/50"
                 placeholder="you@example.com"
                 disabled={loading}
+                aria-required="true"
               />
             </div>
 
@@ -105,14 +106,15 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
                   setPassword(e.target.value);
                   setError(null);
                 }}
-                className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/50 outline-none transition-all bg-white/50"
+                className="w-full px-4 py-3 rounded-xl border-2 border-amber-200 focus:border-amber-500 focus:ring-4 focus:ring-amber-200/50 focus:ring-offset-2 outline-none transition-all bg-white/50"
                 placeholder="••••••••"
                 disabled={loading}
+                aria-required="true"
               />
             </div>
 
             {error && (
-              <div className="bg-rose-50 border-2 border-rose-300 text-rose-700 px-4 py-3 rounded-xl text-sm font-medium">
+              <div className="bg-rose-50 border-2 border-rose-300 text-rose-700 px-4 py-3 rounded-xl text-sm font-medium" role="alert">
                 {error}
               </div>
             )}
@@ -121,8 +123,9 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
               type="submit"
               data-testid="auth-login-submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full min-h-[44px] bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2"
               style={{ fontFamily: 'Georgia, serif' }}
+              aria-label={loading ? 'Signing in...' : 'Sign in to your account'}
             >
               {loading ? 'Signing In...' : 'Sign In'}
             </button>

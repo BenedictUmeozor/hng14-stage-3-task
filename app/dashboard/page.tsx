@@ -158,7 +158,7 @@ export default function DashboardPage() {
       {habits.length === 0 ? (
         <EmptyState onCreateHabit={handleCreateHabit} />
       ) : (
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
           {habits.map((habit) => (
             <HabitCard
               key={habit.id}

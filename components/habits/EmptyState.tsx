@@ -8,19 +8,22 @@ export default function EmptyState({ onCreateHabit }: EmptyStateProps) {
   return (
     <div
       data-testid="empty-state"
-      className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center"
+      className="flex flex-col items-center justify-center min-h-[300px] sm:min-h-[400px] p-6 sm:p-8 text-center"
       style={{
         fontFamily: '"Crimson Pro", Georgia, serif',
       }}
+      role="status"
+      aria-label="No habits created yet"
     >
       {/* Illustration */}
-      <div className="relative mb-8">
-        <div className="w-32 h-32 bg-gradient-to-br from-amber-200 via-orange-200 to-rose-200 rounded-full flex items-center justify-center shadow-xl">
+      <div className="relative mb-6 sm:mb-8">
+        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-amber-200 via-orange-200 to-rose-200 rounded-full flex items-center justify-center shadow-xl">
           <svg
-            className="w-16 h-16 text-amber-600"
+            className="w-12 h-12 sm:w-16 sm:h-16 text-amber-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -31,35 +34,37 @@ export default function EmptyState({ onCreateHabit }: EmptyStateProps) {
           </svg>
         </div>
         {/* Decorative dots */}
-        <div className="absolute -top-2 -right-2 w-4 h-4 bg-amber-400 rounded-full animate-pulse" />
-        <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-orange-400 rounded-full animate-pulse delay-150" />
+        <div className="absolute -top-2 -right-2 w-4 h-4 bg-amber-400 rounded-full animate-pulse" aria-hidden="true" />
+        <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-orange-400 rounded-full animate-pulse delay-150" aria-hidden="true" />
       </div>
 
       {/* Heading */}
-      <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
         No Habits Yet
       </h2>
 
       {/* Description */}
-      <p className="text-lg text-gray-600 mb-8 max-w-md leading-relaxed">
+      <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 max-w-md leading-relaxed px-4">
         Start building better habits today. Create your first habit and begin
         tracking your progress toward a better you.
       </p>
 
-      {/* Call to action button */}
+      {/* Call to action button - full width on mobile, touch-friendly */}
       <button
         onClick={onCreateHabit}
-        className="group relative px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all transform hover:scale-105 active:scale-95 overflow-hidden"
+        className="group relative w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-base sm:text-lg rounded-xl shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95 overflow-hidden"
+        aria-label="Create your first habit"
       >
         {/* Shine effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
         
-        <span className="relative flex items-center gap-2">
+        <span className="relative flex items-center justify-center gap-2">
           <svg
-            className="w-6 h-6"
+            className="w-5 h-5 sm:w-6 sm:h-6"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"

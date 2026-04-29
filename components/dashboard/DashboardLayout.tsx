@@ -32,16 +32,17 @@ export default function DashboardLayout({ children, onCreateHabit }: DashboardLa
 
       {/* Header */}
       <header className="relative border-b-2 border-amber-200/50 bg-white/80 backdrop-blur-sm shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex items-center justify-between gap-3">
             {/* App branding */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg transform rotate-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg transform rotate-3">
                 <svg
-                  className="w-7 h-7 text-white"
+                  className="w-6 h-6 sm:w-7 sm:h-7 text-white"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -51,22 +52,24 @@ export default function DashboardLayout({ children, onCreateHabit }: DashboardLa
                   />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
                 Habit Tracker
               </h1>
             </div>
 
-            {/* Logout button */}
+            {/* Logout button - touch-friendly */}
             <button
               data-testid="auth-logout-button"
               onClick={handleLogout}
-              className="flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-lg border-2 border-gray-300 hover:bg-gray-200 hover:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-400/50 transition-all transform hover:scale-105 active:scale-95"
+              className="flex items-center gap-2 min-h-[44px] px-4 sm:px-5 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-lg border-2 border-gray-300 hover:bg-gray-200 hover:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-400/50 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95"
+              aria-label="Logout from account"
             >
               <svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -82,23 +85,25 @@ export default function DashboardLayout({ children, onCreateHabit }: DashboardLa
       </header>
 
       {/* Main content */}
-      <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Create habit button - floating action */}
-        <div className="mb-8 flex justify-center sm:justify-end">
+      <main className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        {/* Create habit button - full width on mobile, touch-friendly */}
+        <div className="mb-6 sm:mb-8">
           <button
             data-testid="create-habit-button"
             onClick={onCreateHabit}
-            className="group relative px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-amber-400/50 transition-all transform hover:scale-105 active:scale-95 overflow-hidden"
+            className="group relative w-full sm:w-auto sm:float-right min-h-[44px] px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-base sm:text-lg rounded-xl shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95 overflow-hidden"
+            aria-label="Create a new habit"
           >
             {/* Shine effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             
-            <span className="relative flex items-center gap-2">
+            <span className="relative flex items-center justify-center gap-2">
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5 sm:w-6 sm:h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -112,8 +117,8 @@ export default function DashboardLayout({ children, onCreateHabit }: DashboardLa
           </button>
         </div>
 
-        {/* Children content (habit list or empty state) */}
-        <div className="relative">
+        {/* Children content (habit list or empty state) - clear float */}
+        <div className="relative clear-both">
           {children}
         </div>
       </main>
