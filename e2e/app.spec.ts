@@ -809,3 +809,91 @@ test.describe('Persistence', () => {
     await expect(habitCards).toHaveCount(1);
   });
 });
+
+test.describe('PWA and Offline', () => {
+  test('manifest.json is accessible', async ({ page }) => {
+    const response = await page.goto('http://localhost:3000/manifest.json');
+    expect(response?.status()).toBe(200);
+    
+    const manifest = await response?.json();
+    expect(manifest.name).toBe('Habit Tracker');
+    expect(manifest.short_name).toBe('Habits');
+    expect(manifest.start_url).toBe('/');
+    expect(manifest.display).toBe('standalone');
+  });
+
+  test('service worker registers successfully', async ({ page }) => {
+    await page.goto('http://localhost:3000');
+    
+    // Wait for service worker to register
+    const swRegistered = await page.evaluate(async () => {
+      if ('serviceWorker' in navigator) {
+        try {
+          const registration = await navigator.serviceWorker.register('/sw.js');
+          return registration !== null;
+        } catch (error) {
+          return false;
+        }
+      }
+      return false;
+    });
+    
+    expect(swRegistered).toBe(true);
+  });
+
+  test('app loads offline without crash', async ({ page, context }) => {
+    // First, visit the app online to cache resources
+    await page.goto('http://localhost:3000');
+    
+    // Wait for service worker to be ready
+    await page.waitForTimeout(1000);
+    
+    // Go offline
+    await context.setOffline(true);
+    
+    // Navigate to the app
+    await page.goto('http://localhost:3000');
+    
+    // Verify the page loads without crashing
+    // Check for the splash screen or login page
+    const body = await page.locator('body');
+    await expect(body).toBeVisible();
+    
+    // Verify no error messages about network failure
+    const errorText = await page.textContent('body');
+    expect(errorText).not.toContain('ERR_INTERNET_DISCONNECTED');
+    expect(errorText).not.toContain('No internet connection');
+  });
+
+  test('cached resources available offline', async ({ page, context }) => {
+    // First, visit the app online to cache resources
+    await page.goto('http://localhost:3000');
+    
+    // Wait for service worker to cache resources
+    await page.waitForTimeout(1000);
+    
+    // Verify manifest is cached
+    const manifestCached = await page.evaluate(async () => {
+      const cache = await caches.open('habit-tracker-v1');
+      const keys = await cache.keys();
+      return keys.some(request => request.url.includes('manifest.json'));
+    });
+    expect(manifestCached).toBe(true);
+    
+    // Go offline
+    await context.setOffline(true);
+    
+    // Try to access manifest from cache
+    const response = await page.evaluate(async () => {
+      const cache = await caches.open('habit-tracker-v1');
+      const cachedResponse = await cache.match('/manifest.json');
+      if (cachedResponse) {
+        return await cachedResponse.json();
+      }
+      return null;
+    });
+    
+    expect(response).not.toBeNull();
+    expect(response.name).toBe('Habit Tracker');
+  });
+});
