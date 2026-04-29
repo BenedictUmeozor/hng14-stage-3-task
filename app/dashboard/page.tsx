@@ -116,8 +116,15 @@ export default function DashboardPage() {
       <DashboardLayout onCreateHabit={handleCreateHabit}>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-gray-600 font-medium">Loading your habits...</p>
+            <div
+              className="w-12 h-12 border-2 border-t-transparent rounded-full mx-auto mb-4"
+              style={{
+                borderColor: 'var(--border-default)',
+                borderTopColor: 'transparent',
+                animation: 'spin 0.8s linear infinite',
+              }}
+            />
+            <p className="text-sm font-medium" style={{ color: 'var(--text-tertiary)' }}>Loading your habits...</p>
           </div>
         </div>
       </DashboardLayout>

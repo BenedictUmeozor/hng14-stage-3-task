@@ -49,14 +49,29 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-violet-50 via-fuchsia-50 to-amber-100">
-      <div className="w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 border border-violet-200/50">
+    <div
+      className="min-h-screen flex items-center justify-center p-4 sm:p-6"
+      style={{ background: 'var(--bg-primary)' }}
+    >
+      <div className="w-full max-w-md" style={{ animation: 'slideUp 0.4s ease-out' }}>
+        <div
+          className="rounded-xl sm:rounded-2xl p-6 sm:p-8 border"
+          style={{
+            background: 'var(--bg-secondary)',
+            borderColor: 'var(--border-subtle)',
+          }}
+        >
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-2 bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent" style={{ fontFamily: 'Georgia, serif' }}>
-              Start Your Journey
+            <h1
+              className="text-2xl sm:text-3xl font-bold mb-2 tracking-tight"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              Start your journey
             </h1>
-            <p className="text-slate-600 text-sm" style={{ fontFamily: 'system-ui, sans-serif' }}>
+            <p
+              className="text-sm"
+              style={{ color: 'var(--text-tertiary)' }}
+            >
               Create an account to track your habits
             </p>
           </div>
@@ -65,8 +80,8 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-slate-700 mb-2"
-                style={{ fontFamily: 'system-ui, sans-serif' }}
+                className="block text-xs font-medium mb-2 uppercase tracking-wider"
+                style={{ color: 'var(--text-secondary)' }}
               >
                 Email Address
               </label>
@@ -79,18 +94,31 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
                   setEmail(e.target.value);
                   setError(null);
                 }}
-                className="w-full px-4 py-3 rounded-xl border-2 border-violet-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-200/50 focus:ring-offset-2 outline-none transition-all bg-white/50"
+                className="w-full px-4 py-3 rounded-lg border outline-none transition-all text-sm"
+                style={{
+                  background: 'var(--bg-elevated)',
+                  borderColor: 'var(--border-default)',
+                  color: 'var(--text-primary)',
+                }}
                 placeholder="you@example.com"
                 disabled={loading}
                 aria-required="true"
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px var(--focus-ring)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-default)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-semibold text-slate-700 mb-2"
-                style={{ fontFamily: 'system-ui, sans-serif' }}
+                className="block text-xs font-medium mb-2 uppercase tracking-wider"
+                style={{ color: 'var(--text-secondary)' }}
               >
                 Password
               </label>
@@ -103,15 +131,36 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
                   setPassword(e.target.value);
                   setError(null);
                 }}
-                className="w-full px-4 py-3 rounded-xl border-2 border-violet-200 focus:border-violet-500 focus:ring-4 focus:ring-violet-200/50 focus:ring-offset-2 outline-none transition-all bg-white/50"
+                className="w-full px-4 py-3 rounded-lg border outline-none transition-all text-sm"
+                style={{
+                  background: 'var(--bg-elevated)',
+                  borderColor: 'var(--border-default)',
+                  color: 'var(--text-primary)',
+                }}
                 placeholder="••••••••"
                 disabled={loading}
                 aria-required="true"
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--accent)';
+                  e.currentTarget.style.boxShadow = '0 0 0 3px var(--focus-ring)';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-default)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
               />
             </div>
 
             {error && (
-              <div className="bg-rose-50 border-2 border-rose-300 text-rose-700 px-4 py-3 rounded-xl text-sm font-medium" role="alert">
+              <div
+                className="px-4 py-3 rounded-lg text-sm font-medium border"
+                role="alert"
+                style={{
+                  background: 'var(--danger-surface)',
+                  borderColor: 'var(--danger-dim)',
+                  color: 'var(--danger)',
+                }}
+              >
                 {error}
               </div>
             )}
@@ -120,20 +169,30 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
               type="submit"
               data-testid="auth-signup-submit"
               disabled={loading}
-              className="w-full min-h-[44px] bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none focus:outline-none focus:ring-4 focus:ring-violet-400/50 focus:ring-offset-2"
-              style={{ fontFamily: 'Georgia, serif' }}
+              className="w-full min-h-[44px] font-semibold py-3 px-6 rounded-lg transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+              style={{
+                background: 'var(--accent)',
+                color: 'var(--bg-primary)',
+              }}
               aria-label={loading ? 'Creating account...' : 'Create your account'}
+              onMouseEnter={(e) => {
+                if (!loading) e.currentTarget.style.opacity = '0.9';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+              }}
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600" style={{ fontFamily: 'system-ui, sans-serif' }}>
+            <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
               Already have an account?{' '}
               <Link
                 href="/login"
-                className="font-semibold text-violet-600 hover:text-fuchsia-600 transition-colors focus:outline-none focus:underline"
+                className="font-medium transition-colors"
+                style={{ color: 'var(--accent)' }}
               >
                 Sign in
               </Link>

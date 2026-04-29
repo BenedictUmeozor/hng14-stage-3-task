@@ -50,25 +50,28 @@ export default function HabitForm({ habit, onSave, onCancel }: HabitFormProps) {
     <form
       data-testid="habit-form"
       onSubmit={handleSubmit}
-      className="relative bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-2xl shadow-2xl border-2 border-amber-200"
+      className="relative rounded-xl p-5 sm:p-7 border"
       style={{
-        fontFamily: '"Crimson Pro", Georgia, serif',
+        background: 'var(--bg-secondary)',
+        borderColor: 'var(--border-subtle)',
+        animation: 'scaleIn 0.2s ease-out',
       }}
       aria-label={habit ? 'Edit habit form' : 'Create new habit form'}
     >
-      {/* Decorative corner accent */}
-      <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-bl from-amber-400/20 to-transparent rounded-bl-full" />
-      
-      <h2 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-4 sm:mb-6 tracking-tight">
+      <h2
+        className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6 tracking-tight"
+        style={{ color: 'var(--text-primary)' }}
+      >
         {habit ? 'Edit Habit' : 'New Habit'}
       </h2>
 
-      <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-4 sm:space-y-5">
         {/* Name Input */}
         <div>
           <label
             htmlFor="habit-name"
-            className="block text-sm font-semibold text-amber-800 mb-2 uppercase tracking-wider"
+            className="block text-xs font-medium mb-2 uppercase tracking-wider"
+            style={{ color: 'var(--text-secondary)' }}
           >
             Habit Name
           </label>
@@ -81,11 +84,24 @@ export default function HabitForm({ habit, onSave, onCancel }: HabitFormProps) {
               setName(e.target.value);
               setError(null);
             }}
-            className="w-full px-4 py-3 bg-white border-2 border-amber-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 focus:border-amber-500 transition-all text-base sm:text-lg text-gray-900"
+            className="w-full px-4 py-3 rounded-lg border outline-none transition-all text-sm"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-primary)',
+            }}
             placeholder="e.g., Morning meditation"
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--accent)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px var(--focus-ring)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
           {error && (
-            <p className="mt-2 text-sm text-red-600 font-medium">{error}</p>
+            <p className="mt-2 text-sm font-medium" style={{ color: 'var(--danger)' }}>{error}</p>
           )}
         </div>
 
@@ -93,7 +109,8 @@ export default function HabitForm({ habit, onSave, onCancel }: HabitFormProps) {
         <div>
           <label
             htmlFor="habit-description"
-            className="block text-sm font-semibold text-amber-800 mb-2 uppercase tracking-wider"
+            className="block text-xs font-medium mb-2 uppercase tracking-wider"
+            style={{ color: 'var(--text-secondary)' }}
           >
             Description (Optional)
           </label>
@@ -103,8 +120,21 @@ export default function HabitForm({ habit, onSave, onCancel }: HabitFormProps) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            className="w-full px-4 py-3 bg-white border-2 border-amber-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 focus:border-amber-500 transition-all text-base sm:text-lg text-gray-900 resize-none"
+            className="w-full px-4 py-3 rounded-lg border outline-none transition-all text-sm resize-none"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-primary)',
+            }}
             placeholder="Add details about your habit..."
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--accent)';
+              e.currentTarget.style.boxShadow = '0 0 0 3px var(--focus-ring)';
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           />
         </div>
 
@@ -112,7 +142,8 @@ export default function HabitForm({ habit, onSave, onCancel }: HabitFormProps) {
         <div>
           <label
             htmlFor="habit-frequency"
-            className="block text-sm font-semibold text-amber-800 mb-2 uppercase tracking-wider"
+            className="block text-xs font-medium mb-2 uppercase tracking-wider"
+            style={{ color: 'var(--text-secondary)' }}
           >
             Frequency
           </label>
@@ -121,28 +152,56 @@ export default function HabitForm({ habit, onSave, onCancel }: HabitFormProps) {
             data-testid="habit-frequency-select"
             value="daily"
             disabled
-            className="w-full px-4 py-3 bg-amber-100 border-2 border-amber-300 rounded-lg text-base sm:text-lg text-gray-700 cursor-not-allowed"
+            className="w-full px-4 py-3 rounded-lg border text-sm cursor-not-allowed"
+            style={{
+              background: 'var(--bg-surface)',
+              borderColor: 'var(--border-subtle)',
+              color: 'var(--text-tertiary)',
+            }}
           >
             <option value="daily">Daily</option>
           </select>
-          <p className="mt-1 text-xs text-amber-700 italic">
+          <p className="mt-1.5 text-xs" style={{ color: 'var(--text-tertiary)' }}>
             Only daily habits are supported in this version
           </p>
         </div>
 
-        {/* Action Buttons - full width on mobile, touch-friendly */}
-        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-3">
           <button
             type="submit"
             data-testid="habit-save-button"
-            className="w-full sm:flex-1 min-h-[44px] px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:from-amber-600 hover:to-orange-600 focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:flex-1 min-h-[44px] px-6 py-3 font-semibold rounded-lg transition-all text-sm"
+            style={{
+              background: 'var(--accent)',
+              color: 'var(--bg-primary)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '0.9';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '1';
+            }}
           >
             {habit ? 'Save Changes' : 'Create Habit'}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="w-full sm:w-auto min-h-[44px] px-6 py-3 bg-white text-amber-800 font-semibold rounded-lg border-2 border-amber-300 hover:bg-amber-50 focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 transition-all"
+            className="w-full sm:w-auto min-h-[44px] px-6 py-3 font-medium rounded-lg border transition-all text-sm"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-secondary)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-strong)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.color = 'var(--text-secondary)';
+            }}
           >
             Cancel
           </button>

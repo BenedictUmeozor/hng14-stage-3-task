@@ -24,66 +24,98 @@ export default function HabitCard({
   return (
     <article
       data-testid={`habit-card-${slug}`}
-      className={`relative overflow-hidden rounded-2xl p-4 sm:p-6 transition-all duration-300 ${
-        isCompletedToday
-          ? 'bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 border-2 border-emerald-400 shadow-lg shadow-emerald-200/50'
-          : 'bg-white border-2 border-gray-300 shadow-md hover:shadow-lg'
-      }`}
+      className={`relative overflow-hidden rounded-xl p-4 sm:p-5 border transition-all duration-200`}
       style={{
-        fontFamily: '"Crimson Pro", Georgia, serif',
+        background: isCompletedToday ? 'var(--accent-surface)' : 'var(--bg-secondary)',
+        borderColor: isCompletedToday ? 'var(--accent-dim)' : 'var(--border-subtle)',
+        animation: 'slideUp 0.3s ease-out',
       }}
       aria-label={`${habit.name} habit card`}
     >
-      {/* Decorative streak badge */}
+      {/* Completed indicator bar */}
+      {isCompletedToday && (
+        <div
+          className="absolute top-0 left-0 w-full h-0.5"
+          style={{ background: 'var(--accent)' }}
+        />
+      )}
+
+      {/* Streak badge */}
       {currentStreak > 0 && (
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
           <div
             data-testid={`habit-streak-${slug}`}
-            className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full shadow-lg transform rotate-12"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-bold"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--warning-dim)',
+              color: 'var(--warning)',
+            }}
             aria-label={`Current streak: ${currentStreak} ${currentStreak === 1 ? 'day' : 'days'}`}
           >
-            <div className="absolute inset-1 bg-white rounded-full flex flex-col items-center justify-center">
-              <span className="text-xl sm:text-2xl font-bold text-amber-600 leading-none">
-                {currentStreak}
-              </span>
-              <span className="text-[9px] sm:text-[10px] font-semibold text-amber-700 uppercase tracking-tight">
-                {currentStreak === 1 ? 'day' : 'days'}
-              </span>
-            </div>
+            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" />
+            </svg>
+            <span>{currentStreak}</span>
+            <span className="font-normal" style={{ color: 'var(--text-tertiary)' }}>
+              {currentStreak === 1 ? 'day' : 'days'}
+            </span>
           </div>
         </div>
       )}
 
       {/* Content */}
-      <div className="pr-16 sm:pr-20">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 tracking-tight">
+      <div className="pr-24 sm:pr-28">
+        <h3
+          className="text-base sm:text-lg font-semibold mb-1 tracking-tight"
+          style={{ color: 'var(--text-primary)' }}
+        >
           {habit.name}
         </h3>
         {habit.description && (
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4">
+          <p
+            className="text-sm leading-relaxed mb-3"
+            style={{ color: 'var(--text-tertiary)' }}
+          >
             {habit.description}
           </p>
         )}
       </div>
 
-      {/* Action buttons - mobile-first, touch-friendly (min 44x44px) */}
+      {/* Action buttons */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-4">
-        {/* Complete button - full width on mobile */}
+        {/* Complete button */}
         <button
           data-testid={`habit-complete-${slug}`}
           onClick={() => onToggleComplete(habit.id)}
-          className={`w-full sm:flex-1 flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-lg font-semibold transition-all transform hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-offset-2 ${
-            isCompletedToday
-              ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-md hover:shadow-lg focus:ring-emerald-400/50'
-              : 'bg-gray-100 text-gray-700 border-2 border-gray-300 hover:bg-gray-200 focus:ring-gray-400/50'
-          }`}
+          className="w-full sm:flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-lg font-medium transition-all text-sm border"
+          style={{
+            background: isCompletedToday ? 'var(--accent)' : 'var(--bg-elevated)',
+            color: isCompletedToday ? 'var(--bg-primary)' : 'var(--text-secondary)',
+            borderColor: isCompletedToday ? 'var(--accent)' : 'var(--border-default)',
+          }}
           aria-pressed={isCompletedToday}
           aria-label={isCompletedToday ? `Mark ${habit.name} as incomplete` : `Mark ${habit.name} as complete`}
+          onMouseEnter={(e) => {
+            if (isCompletedToday) {
+              e.currentTarget.style.opacity = '0.9';
+            } else {
+              e.currentTarget.style.borderColor = 'var(--border-strong)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '1';
+            if (!isCompletedToday) {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.color = 'var(--text-secondary)';
+            }
+          }}
         >
           {isCompletedToday ? (
             <>
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 aria-hidden="true"
@@ -99,7 +131,7 @@ export default function HabitCard({
           ) : (
             <>
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -112,17 +144,29 @@ export default function HabitCard({
           )}
         </button>
 
-        {/* Edit and Delete buttons - side by side on mobile */}
+        {/* Edit and Delete buttons */}
         <div className="flex gap-2">
-          {/* Edit button - touch-friendly size */}
           <button
             data-testid={`habit-edit-${slug}`}
             onClick={() => onEdit(habit.id)}
-            className="flex-1 sm:flex-none min-w-[44px] min-h-[44px] p-3 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 transition-all"
+            className="flex-1 sm:flex-none min-w-[44px] min-h-[44px] p-2.5 rounded-lg border transition-all"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-tertiary)',
+            }}
             aria-label={`Edit ${habit.name} habit`}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-strong)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.color = 'var(--text-tertiary)';
+            }}
           >
             <svg
-              className="w-5 h-5 mx-auto"
+              className="w-4 h-4 mx-auto"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -137,15 +181,27 @@ export default function HabitCard({
             </svg>
           </button>
 
-          {/* Delete button - touch-friendly size */}
           <button
             data-testid={`habit-delete-${slug}`}
             onClick={() => onDelete(habit.id)}
-            className="flex-1 sm:flex-none min-w-[44px] min-h-[44px] p-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 focus:outline-none focus:ring-4 focus:ring-red-400/50 focus:ring-offset-2 transition-all"
+            className="flex-1 sm:flex-none min-w-[44px] min-h-[44px] p-2.5 rounded-lg border transition-all"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-tertiary)',
+            }}
             aria-label={`Delete ${habit.name} habit`}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--danger-dim)';
+              e.currentTarget.style.color = 'var(--danger)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.color = 'var(--text-tertiary)';
+            }}
           >
             <svg
-              className="w-5 h-5 mx-auto"
+              className="w-4 h-4 mx-auto"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

@@ -13,7 +13,12 @@ export default function DeleteConfirmationDialog({
 }: DeleteConfirmationDialogProps) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{
+        background: 'rgba(0, 0, 0, 0.7)',
+        backdropFilter: 'blur(4px)',
+        animation: 'fadeIn 0.15s ease-out',
+      }}
       onClick={onCancel}
       role="dialog"
       aria-modal="true"
@@ -21,20 +26,30 @@ export default function DeleteConfirmationDialog({
       aria-describedby="dialog-description"
     >
       <div
-        className="relative bg-gradient-to-br from-red-50 via-orange-50 to-amber-50 rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 border-2 border-red-200 animate-scaleIn"
+        className="relative rounded-xl max-w-md w-full p-6 sm:p-7 border"
         style={{
-          fontFamily: '"Crimson Pro", Georgia, serif',
+          background: 'var(--bg-secondary)',
+          borderColor: 'var(--border-subtle)',
+          animation: 'scaleIn 0.2s ease-out',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Warning icon */}
         <div className="flex justify-center mb-4">
-          <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg" aria-hidden="true">
+          <div
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center border"
+            aria-hidden="true"
+            style={{
+              background: 'var(--danger-surface)',
+              borderColor: 'var(--danger-dim)',
+            }}
+          >
             <svg
-              className="w-7 h-7 sm:w-8 sm:h-8 text-white"
+              className="w-6 h-6 sm:w-7 sm:h-7"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              style={{ color: 'var(--danger)' }}
             >
               <path
                 strokeLinecap="round"
@@ -47,66 +62,67 @@ export default function DeleteConfirmationDialog({
         </div>
 
         {/* Title */}
-        <h2 id="dialog-title" className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-3">
+        <h2
+          id="dialog-title"
+          className="text-lg sm:text-xl font-bold text-center mb-2"
+          style={{ color: 'var(--text-primary)' }}
+        >
           Delete Habit?
         </h2>
 
         {/* Message */}
-        <p id="dialog-description" className="text-sm sm:text-base text-gray-700 text-center mb-6 leading-relaxed">
+        <p
+          id="dialog-description"
+          className="text-sm text-center mb-6 leading-relaxed"
+          style={{ color: 'var(--text-tertiary)' }}
+        >
           Are you sure you want to delete{' '}
-          <span className="font-bold text-red-700">&quot;{habitName}&quot;</span>?
+          <span className="font-semibold" style={{ color: 'var(--danger)' }}>&quot;{habitName}&quot;</span>?
           This action cannot be undone and all progress will be lost.
         </p>
 
-        {/* Action buttons - full width on mobile, touch-friendly */}
+        {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={onCancel}
-            className="w-full sm:flex-1 min-h-[44px] px-6 py-3 bg-white text-gray-700 font-semibold rounded-lg border-2 border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/50 focus:ring-offset-2 transition-all"
+            className="w-full sm:flex-1 min-h-[44px] px-6 py-3 font-medium rounded-lg border transition-all text-sm"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+              color: 'var(--text-secondary)',
+            }}
             aria-label="Cancel deletion"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-strong)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-default)';
+              e.currentTarget.style.color = 'var(--text-secondary)';
+            }}
           >
             Cancel
           </button>
           <button
             data-testid="confirm-delete-button"
             onClick={onConfirm}
-            className="w-full sm:flex-1 min-h-[44px] px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:from-red-600 hover:to-orange-600 focus:outline-none focus:ring-4 focus:ring-red-400/50 focus:ring-offset-2 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full sm:flex-1 min-h-[44px] px-6 py-3 font-semibold rounded-lg transition-all text-sm"
+            style={{
+              background: 'var(--danger)',
+              color: '#fff',
+            }}
             aria-label="Confirm deletion"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '0.9';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '1';
+            }}
           >
             Delete
           </button>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.2s ease-out;
-        }
-
-        .animate-scaleIn {
-          animation: scaleIn 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 }

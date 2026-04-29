@@ -9,94 +9,103 @@ export default function EmptyState({ onCreateHabit }: EmptyStateProps) {
     <div
       data-testid="empty-state"
       className="flex flex-col items-center justify-center min-h-[300px] sm:min-h-[400px] p-6 sm:p-8 text-center"
-      style={{
-        fontFamily: '"Crimson Pro", Georgia, serif',
-      }}
       role="status"
       aria-label="No habits created yet"
+      style={{ animation: 'fadeIn 0.4s ease-out' }}
     >
       {/* Illustration */}
       <div className="relative mb-6 sm:mb-8">
-        <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-amber-200 via-orange-200 to-rose-200 rounded-full flex items-center justify-center shadow-xl">
+        <div
+          className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center border"
+          style={{
+            background: 'var(--bg-elevated)',
+            borderColor: 'var(--border-default)',
+          }}
+        >
           <svg
-            className="w-12 h-12 sm:w-16 sm:h-16 text-amber-600"
+            className="w-10 h-10 sm:w-12 sm:h-12"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             aria-hidden="true"
+            style={{ color: 'var(--text-tertiary)' }}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
+              strokeWidth={1.5}
               d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
             />
           </svg>
         </div>
         {/* Decorative dots */}
-        <div className="absolute -top-2 -right-2 w-4 h-4 bg-amber-400 rounded-full animate-pulse" aria-hidden="true" />
-        <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-orange-400 rounded-full animate-pulse delay-150" aria-hidden="true" />
+        <div
+          className="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 rounded-full"
+          aria-hidden="true"
+          style={{
+            background: 'var(--accent)',
+            animation: 'subtlePulse 2s ease-in-out infinite',
+          }}
+        />
+        <div
+          className="absolute -bottom-1.5 -left-1.5 w-2 h-2 rounded-full"
+          aria-hidden="true"
+          style={{
+            background: 'var(--border-strong)',
+            animation: 'subtlePulse 2s ease-in-out 0.5s infinite',
+          }}
+        />
       </div>
 
       {/* Heading */}
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+      <h2
+        className="text-xl sm:text-2xl font-bold mb-2 tracking-tight"
+        style={{ color: 'var(--text-primary)' }}
+      >
         No Habits Yet
       </h2>
 
       {/* Description */}
-      <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 max-w-md leading-relaxed px-4">
+      <p
+        className="text-sm sm:text-base mb-6 sm:mb-8 max-w-sm leading-relaxed px-4"
+        style={{ color: 'var(--text-tertiary)' }}
+      >
         Start building better habits today. Create your first habit and begin
         tracking your progress toward a better you.
       </p>
 
-      {/* Call to action button - full width on mobile, touch-friendly */}
+      {/* Call to action button */}
       <button
         onClick={onCreateHabit}
-        className="group relative w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-base sm:text-lg rounded-xl shadow-lg hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-amber-400/50 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95 overflow-hidden"
+        className="w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 font-semibold text-sm rounded-lg transition-all flex items-center justify-center gap-2"
+        style={{
+          background: 'var(--accent)',
+          color: 'var(--bg-primary)',
+        }}
         aria-label="Create your first habit"
+        onMouseEnter={(e) => {
+          e.currentTarget.style.opacity = '0.9';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.opacity = '1';
+        }}
       >
-        {/* Shine effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-        
-        <span className="relative flex items-center justify-center gap-2">
-          <svg
-            className="w-5 h-5 sm:w-6 sm:h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          Create Your First Habit
-        </span>
+        <svg
+          className="w-4 h-4 sm:w-5 sm:h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+        Create Your First Habit
       </button>
-
-      <style jsx>{`
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.5;
-            transform: scale(1.1);
-          }
-        }
-
-        .animate-pulse {
-          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        .delay-150 {
-          animation-delay: 150ms;
-        }
-      `}</style>
     </div>
   );
 }

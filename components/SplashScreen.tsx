@@ -29,53 +29,76 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
   return (
     <div
       data-testid="splash-screen"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden transition-opacity duration-300"
-      style={{ opacity: isVisible ? 1 : 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden transition-opacity duration-300"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        background: 'var(--bg-primary)',
+      }}
     >
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" />
-        <div 
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-yellow-300 rounded-full blur-3xl animate-pulse" 
-          style={{ animationDelay: '0.5s' }} 
-        />
-      </div>
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(var(--border-subtle) 1px, transparent 1px), linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+        }}
+      />
 
       {/* Main content */}
-      <div className="relative z-10 text-center px-6">
+      <div className="relative z-10 text-center px-6" style={{ animation: 'slideUp 0.6s ease-out' }}>
         <div className="mb-8">
-          {/* Icon/Logo */}
-          <div className="inline-flex items-center justify-center w-24 h-24 mb-6 bg-white/20 backdrop-blur-sm rounded-3xl shadow-2xl animate-bounce">
+          {/* Icon */}
+          <div
+            className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-2xl border"
+            style={{
+              background: 'var(--bg-elevated)',
+              borderColor: 'var(--border-default)',
+            }}
+          >
             <svg
-              className="w-12 h-12 text-white"
+              className="w-10 h-10"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              style={{ color: 'var(--accent)' }}
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2.5}
+                strokeWidth={2}
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </div>
 
           {/* App name */}
-          <h1 className="text-6xl font-bold text-white mb-3 tracking-tight">
+          <h1
+            className="text-5xl sm:text-6xl font-bold mb-3 tracking-tight"
+            style={{ color: 'var(--text-primary)' }}
+          >
             Habit Tracker
           </h1>
-          
-          <p className="text-xl text-white/90 font-light">
+
+          <p
+            className="text-base sm:text-lg font-normal"
+            style={{ color: 'var(--text-tertiary)' }}
+          >
             Build better habits, one day at a time
           </p>
         </div>
 
         {/* Loading indicator */}
-        <div className="flex justify-center gap-2">
-          <div className="w-2 h-2 bg-white rounded-full animate-bounce" />
-          <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-          <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+        <div className="flex justify-center gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full"
+              style={{
+                background: 'var(--accent)',
+                animation: `subtlePulse 1.4s ease-in-out ${i * 0.2}s infinite`,
+              }}
+            />
+          ))}
         </div>
       </div>
     </div>
